@@ -27,15 +27,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run server
-        run: npm start & npx wait-on http://127.0.0.1:XYZ
+        run: npm start & npx wait-on http://127.0.0.1:$PORT #| to use that defined env var in the workflow for windows must be $env:PORT
       - name: Run tests
         run: npm test
       - name: Output information
-        run: echo "..."
+        run: echo "MONGODB_USERNAME:${{ env.MONGODB_USERNAME }}" ## the other way to have access to the env vars
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Output information
         run: |
-          echo "..."
+          echo "MONGODB_USERNAME:${{ env.MONGODB_USERNAME }}" #? here we dot have access as that env are limited to on their job and not this job
+           echo "MONGODB_USERNAME:${{ env.MONGODB_DB_NAME }}" #? but this is available
+           echo "MONGODB_USERNAME:$MONGODB_DB_NAME" #? but this is available
+
+#? more infor for vars and useing https://docs.github.com/en/actions/learn-github-actions/variables
