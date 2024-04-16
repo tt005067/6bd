@@ -1,11 +1,19 @@
 name: Deployment
 on:
   push:
-    branches:
+    branches: #* push on these 2
       - main
       - dev
+env:
+  MONGODB_DB_NAME: gha-demo #* means this value is avaiable for all jobs , we can even define on each job level or step level!
+
 jobs:
   test:
+    env:
+      MONGODB_CLUSTER_ADDRESS: gittest.ctyozks.mongodb.net
+      MONGODB_USERNAME: gittest
+      MONGODB_PASSWORD: gittest
+      PORT: 8080 #? we can set this for each job as they need!
     environment: testing
     runs-on: ubuntu-latest
     steps:
@@ -29,5 +37,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Output information
-        run: |        
+        run: |
           echo "..."
