@@ -9,13 +9,13 @@ env:
 
 jobs:
   test:
+    environment: testing # ? add the environmet and the name of what we created in the repo
     env:
       # *after setting secret in the repository
       MONGODB_CLUSTER_ADDRESS: ${{ secrets.MONGODB_CLUSTER_ADDRESS }}
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080 #? we can set this for each job as they need!
-    environment: testing
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
@@ -47,3 +47,7 @@ jobs:
 
 # ! but we have a problem , all these vars can be exposed in github repository , so we need a wayt to prent displaying these vals in repository. ==> Secrets! thses are kind of env vars but never will be diospled in the git repository.
 # #  got repo>setting>security>secrets and vars>actions:we cann all our sensetive data , we can name them with the name of the envs or what ever we want. then we have to update our workflow file
+
+# ? Environments : we can have multiple environmets as test production staging  and ... and based on these environments we may have diffrent database and usernames and passwords
+# # so we can define environmet in repo setting , and then add diffrenet environmets and into them add specift secrets related to that environment! then we need to add environment key in the workflow , ofcousre we have some choices to do more change on the environment in repo, like wait time , branch protection and more ....
+# ? ex  in Deployment branches and tags  section we choose the selected branch and then we add main , means  only if the main branch was part of the event that triggered the workflow execution,jobs that referenced the testing environment should execute. so in this workflow we sait on push main and dev , but thanx to that rul test just will be executed in the main.(And in general, this workflow can be triggered if I push to the dev branch.But thanks to this rule, this test job would not execute.)
